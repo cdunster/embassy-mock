@@ -7,6 +7,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   outputs = { self, ... }@inputs:
@@ -18,12 +23,28 @@
         rustFromFile = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
       in
       {
+        checks = {
+          pre-commit = inputs.pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              nixpkgs-fmt.enable = true;
+              rustfmt.enable = true;
+              commitizen.enable = true;
+              taplo.enable = true;
+            };
+          };
+        };
+
         devShells.default = with pkgs; mkShell {
           packages = [
             rustFromFile
           ];
 
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
+
+          shellHook = ''
+            ${(self.checks.${system}.pre-commit).shellHook}
+          '';
         };
       });
 }
