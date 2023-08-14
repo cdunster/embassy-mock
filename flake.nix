@@ -38,6 +38,7 @@
         devShells.default = with pkgs; mkShell {
           packages = [
             rustFromFile
+            taplo
           ];
 
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
