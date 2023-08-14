@@ -6,3 +6,12 @@ license = "MIT"
 repository = "https://github.com/cdunster/embassy-mock"
 version = "0.0.0"
 edition = "2021"
+
+[dependencies]
+embassy-executor = { version = "0.2.0", features = [
+  "nightly",
+], optional = true }
+
+[features]
+default = ["executor"]
+executor = ["dep:embassy-executor"]
