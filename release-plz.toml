@@ -1,0 +1,2 @@
+[workspace]
+changelog_config = "cliff.toml" # Path to the git-cliff configuration file
