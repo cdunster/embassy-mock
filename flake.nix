@@ -42,6 +42,7 @@
             git-cliff
             cargo-make
             cargo-tarpaulin
+            cargo-toml-lint
           ];
 
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
