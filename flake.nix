@@ -40,6 +40,7 @@
             rustFromFile
             taplo
             git-cliff
+            cargo-make
           ];
 
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
