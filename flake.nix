@@ -41,6 +41,7 @@
             taplo
             git-cliff
             cargo-make
+            cargo-tarpaulin
           ];
 
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
