@@ -119,8 +119,9 @@ pub enum MockSpawnerError {
 /// #[embassy_executor::task]
 /// async fn example_task() {}
 ///
-/// let spawner = MockSpawner::<1>::new();  // Expects `spawn()` to be called once.
+/// let spawner = MockSpawner::<1>::new(); // Expects `spawn()` to be called once.
 /// spawner.spawn(example_task()).unwrap(); // `spawn()` is called once.
+///
 /// // `spawner` is dropped but doesn't panic.
 /// ```
 ///
@@ -132,11 +133,11 @@ pub enum MockSpawnerError {
 /// #[embassy_executor::task]
 /// async fn example_task() {}
 ///
-/// let spawner = MockSpawner::<2>::new();  // Expects `spawn()` to be called twice.
+/// let spawner = MockSpawner::<2>::new(); // Expects `spawn()` to be called twice.
 /// spawner.spawn(example_task()).unwrap(); // `spawn()` is called only once.
+///
 /// // `spawner` is dropped and will panic.
 /// ```
-///
 #[derive(Debug)]
 pub struct MockSpawner<const N: usize> {
     times_called: AtomicUsize,
