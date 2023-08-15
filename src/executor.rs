@@ -40,6 +40,7 @@
 
 use core::sync::atomic::{AtomicUsize, Ordering};
 use embassy_executor::{SpawnError, SpawnToken, Spawner as EmbassySpawner};
+use thiserror_no_std::Error;
 
 /// The trait to replace the [`embassy_executor::Spawner`] in code to allow the [`MockSpawner`] to
 /// be used in its place for tests.
@@ -55,6 +56,12 @@ impl Spawner for EmbassySpawner {
     fn spawn<S>(&self, token: SpawnToken<S>) -> Result<(), SpawnError> {
         self.spawn(token)
     }
+}
+
+#[derive(Debug, Error, PartialEq)]
+pub enum MockSpawnerError {
+    #[error("expected to spawn {expected} task(s), actually spawned {actual}")]
+    WrongNumberOfTasks { expected: usize, actual: usize },
 }
 
 /// A mocked version of [`embassy_executor::Spawner`] that can be used in its place for unit tests.
@@ -93,6 +100,7 @@ impl Spawner for EmbassySpawner {
 #[derive(Debug)]
 pub struct MockSpawner<const N: usize> {
     times_called: AtomicUsize,
+    is_done: bool,
 }
 
 impl<const N: usize> MockSpawner<N> {
@@ -109,18 +117,36 @@ impl<const N: usize> MockSpawner<N> {
     pub const fn new() -> Self {
         Self {
             times_called: AtomicUsize::new(0),
+            is_done: false,
         }
+    }
+
+    pub fn done(mut self) -> Result<(), MockSpawnerError> {
+        let times_called = self.times_called.load(Ordering::Relaxed);
+        let res = if times_called != N {
+            Err(MockSpawnerError::WrongNumberOfTasks {
+                expected: N,
+                actual: times_called,
+            })
+        } else {
+            Ok(())
+        };
+
+        self.is_done = true;
+        res
     }
 }
 
 impl<const N: usize> Drop for MockSpawner<N> {
     fn drop(&mut self) {
-        let times_called = self.times_called.load(Ordering::Relaxed);
-        assert_eq!(
-            N, times_called,
-            "expected to spawn {} task(s), actually spawned {}",
-            N, times_called
-        );
+        if !self.is_done {
+            let times_called = self.times_called.load(Ordering::Relaxed);
+            assert_eq!(
+                N, times_called,
+                "expected to spawn {} task(s), actually spawned {}",
+                N, times_called
+            );
+        }
     }
 }
 
@@ -174,5 +200,29 @@ mod tests {
     fn spawn_too_few_tasks() {
         let spawner = MockSpawner::<3>::new();
         spawner.spawn(example_task()).unwrap();
+    }
+
+    #[test]
+    fn done_returns_ok() {
+        let spawner = MockSpawner::<1>::new();
+        spawner.spawn(example_task()).unwrap();
+
+        let res = spawner.done();
+
+        assert_eq!(res, Ok(()));
+    }
+
+    #[test]
+    fn done_returns_err_does_not_panic_on_drop() {
+        let spawner = MockSpawner::<3>::new();
+        spawner.spawn(example_task()).unwrap();
+
+        let res = spawner.done();
+
+        let expected = Err(MockSpawnerError::WrongNumberOfTasks {
+            expected: 3,
+            actual: 1,
+        });
+        assert_eq!(res, expected);
     }
 }
