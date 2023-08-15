@@ -11,6 +11,7 @@ edition = "2021"
 embassy-executor = { version = "0.2.0", features = [
   "nightly",
 ], optional = true }
+thiserror-no-std = "2.0.2"
 
 [features]
 default = ["executor"]
