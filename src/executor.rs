@@ -260,13 +260,13 @@ mod tests {
     async fn example_task() {}
 
     #[test]
-    fn can_spawn_single_task() {
+    fn can_spawn_single_task_just_drop() {
         let spawner = MockSpawner::<1>::new();
         spawner.spawn(example_task()).unwrap();
     }
 
     #[test]
-    fn can_spawn_multiple_tasks() {
+    fn can_spawn_multiple_tasks_just_drop() {
         let spawner = MockSpawner::<3>::new();
         spawner.spawn(example_task()).unwrap();
         spawner.spawn(example_task()).unwrap();
@@ -275,7 +275,7 @@ mod tests {
 
     #[test]
     #[should_panic(expected = "expected to spawn 1 task(s), actually spawned 3")]
-    fn spawn_too_many_tasks() {
+    fn spawn_too_many_tasks_just_drop() {
         let spawner = MockSpawner::<1>::new();
         spawner.spawn(example_task()).unwrap();
         spawner.spawn(example_task()).unwrap();
@@ -284,7 +284,7 @@ mod tests {
 
     #[test]
     #[should_panic(expected = "expected to spawn 3 task(s), actually spawned 1")]
-    fn spawn_too_few_tasks() {
+    fn spawn_too_few_tasks_just_drop() {
         let spawner = MockSpawner::<3>::new();
         spawner.spawn(example_task()).unwrap();
     }
