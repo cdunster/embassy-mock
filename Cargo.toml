@@ -19,9 +19,19 @@ embassy-executor = { version = "0.2.0", features = [
 embassy-time = { version = "0.1.2", optional = true }
 thiserror-no-std = "2.0.2"
 
+[dev-dependencies]
+embassy-futures = "0.1.0"
+embassy-executor = { version = "*", features = [
+  "nightly",
+  "arch-std",
+  "integrated-timers",
+] }
+embassy-time = { version = "*", features = ["std"] }
+
 [features]
-default = ["executor"]
+default = ["executor", "time"]
 executor = ["dep:embassy-executor"]
+time = ["dep:embassy-time"]
 examples = [
   "dep:embassy-time",
   "embassy-time/std",
