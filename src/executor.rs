@@ -33,6 +33,8 @@
 //!     fn test_spawning_of_tasks() {
 //!         let spawner = MockSpawner::<1>::new();
 //!         spawn_tasks(&spawner);
+//!
+//!         assert_eq!(spawner.done(), Ok(()));
 //!     }
 //! # mod closing {
 //! }
@@ -58,21 +60,56 @@ impl Spawner for EmbassySpawner {
     }
 }
 
+/// The errors that are reported by [`MockSpawner`].
 #[derive(Debug, Error, PartialEq)]
 pub enum MockSpawnerError {
+    /// The [`MockSpawner::spawn()`] method was called the wrong number of times.
     #[error("expected to spawn {expected} task(s), actually spawned {actual}")]
-    WrongNumberOfTasks { expected: usize, actual: usize },
+    WrongNumberOfTasks {
+        /// The expected number of calls to [`MockSpawner::spawn()`].
+        expected: usize,
+
+        /// The actual number of times [`MockSpawner::spawn()`] was called.
+        actual: usize,
+    },
 }
 
 /// A mocked version of [`embassy_executor::Spawner`] that can be used in its place for unit tests.
 ///
-/// This mocked version counts how many times [`Self::spawn()`] is called and asserts that it was
-/// called the correct number of times when dropped.
+/// This mocked version counts how many times [`Self::spawn()`] is called and can be checked that
+/// [`Self::spawn()`] was called the correct number of times using [`Self::done()`]. If
+/// [`Self::done()`] is not called then it asserts that [`Self::spawn()`] was called the correct
+/// number of times when dropped which causes a panic if incorrect.
 ///
 /// The const generic argument `N` is used to declare how many times [`Self::spawn()`] should be
 /// called.
 ///
+/// # Panics
+///
+/// Panics if [`Self::spawn()`] called the wrong number of times and [`Self`] is dropped before
+/// calling [`Self::done()`].
+///
 /// # Examples
+///
+/// ```
+/// # #![feature(type_alias_impl_trait)]
+/// #
+/// use embassy_mock::executor::{MockSpawner, MockSpawnerError, Spawner};
+///
+/// #[embassy_executor::task]
+/// async fn example_task() {}
+///
+/// let spawner = MockSpawner::<4>::new();
+/// spawner.spawn(example_task()).unwrap();
+///
+/// let res = spawner.done();
+///
+/// let expected = Err(MockSpawnerError::WrongNumberOfTasks {
+///     expected: 4,
+///     actual: 1,
+/// });
+/// assert_eq!(res, expected);
+/// ```
 ///
 /// ```
 /// # #![feature(type_alias_impl_trait)]
@@ -84,6 +121,7 @@ pub enum MockSpawnerError {
 ///
 /// let spawner = MockSpawner::<1>::new();  // Expects `spawn()` to be called once.
 /// spawner.spawn(example_task()).unwrap(); // `spawn()` is called once.
+/// // `spawner` is dropped but doesn't panic.
 /// ```
 ///
 /// ```should_panic
@@ -96,7 +134,9 @@ pub enum MockSpawnerError {
 ///
 /// let spawner = MockSpawner::<2>::new();  // Expects `spawn()` to be called twice.
 /// spawner.spawn(example_task()).unwrap(); // `spawn()` is called only once.
+/// // `spawner` is dropped and will panic.
 /// ```
+///
 #[derive(Debug)]
 pub struct MockSpawner<const N: usize> {
     times_called: AtomicUsize,
@@ -121,6 +161,53 @@ impl<const N: usize> MockSpawner<N> {
         }
     }
 
+    /// Mark the [`MockSpawner`] as done and check if [`Self::spawn()`] was called the correct
+    /// number of times.
+    ///
+    /// This is a cleaner way of testing that [`Self::spawn()`] is called the correct number of
+    /// times as [`MockSpawner`] doesn't cause a panic when dropped if this method is called,
+    /// it also returns a [`Result<(), MockSpawnerError>`] which allows checking the outcome of the
+    /// mock.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # #![feature(type_alias_impl_trait)]
+    /// #
+    /// use embassy_mock::executor::{MockSpawner, Spawner};
+    ///
+    /// #[embassy_executor::task]
+    /// async fn example_task() {}
+    ///
+    /// let spawner = MockSpawner::<1>::new();
+    /// spawner.spawn(example_task()).unwrap();
+    ///
+    /// let res = spawner.done();
+    ///
+    /// assert_eq!(res, Ok(()));
+    /// ```
+    ///
+    /// ```
+    /// # #![feature(type_alias_impl_trait)]
+    /// #
+    /// use embassy_mock::executor::{MockSpawner, MockSpawnerError, Spawner};
+    ///
+    /// #[embassy_executor::task]
+    /// async fn example_task() {}
+    ///
+    /// let spawner = MockSpawner::<4>::new();
+    /// spawner.spawn(example_task()).unwrap();
+    ///
+    /// let res = spawner.done();
+    ///
+    /// let expected = Err(MockSpawnerError::WrongNumberOfTasks {
+    ///     expected: 4,
+    ///     actual: 1,
+    /// });
+    /// assert_eq!(res, expected);
+    ///
+    /// // This doesn't panic when `spawner` is dropped as `spawner.done()` was called.
+    /// ```
     pub fn done(mut self) -> Result<(), MockSpawnerError> {
         let times_called = self.times_called.load(Ordering::Relaxed);
         let res = if times_called != N {
