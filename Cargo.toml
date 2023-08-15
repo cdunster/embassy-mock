@@ -4,7 +4,7 @@ authors = ["Callum Dunster"]
 description = "An unofficial collection of mocked types for the Embassy framework"
 license = "MIT"
 repository = "https://github.com/cdunster/embassy-mock"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2021"
 
 [[example]]
