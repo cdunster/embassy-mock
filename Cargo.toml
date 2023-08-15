@@ -7,12 +7,25 @@ repository = "https://github.com/cdunster/embassy-mock"
 version = "0.0.0"
 edition = "2021"
 
+[[example]]
+name = "executor"
+required-features = ["executor", "examples"]
+test = true
+
 [dependencies]
 embassy-executor = { version = "0.2.0", features = [
   "nightly",
 ], optional = true }
+embassy-time = { version = "0.1.2", optional = true }
 thiserror-no-std = "2.0.2"
 
 [features]
 default = ["executor"]
 executor = ["dep:embassy-executor"]
+examples = [
+  "dep:embassy-time",
+  "embassy-time/std",
+  "embassy-executor/executor-thread",
+  "embassy-executor/arch-std",
+  "embassy-executor/integrated-timers",
+]
