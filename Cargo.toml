@@ -26,12 +26,12 @@ thiserror-no-std = "2.0.2"
 
 [dev-dependencies]
 embassy-futures = "0.1.0"
-embassy-executor = { version = "*", features = [
+embassy-executor = { version = "0.2.0", features = [
   "nightly",
   "arch-std",
   "integrated-timers",
 ] }
-embassy-time = { version = "*", features = ["std"] }
+embassy-time = { version = "0.1.2", features = ["std"] }
 
 [features]
 default = ["executor", "time"]
