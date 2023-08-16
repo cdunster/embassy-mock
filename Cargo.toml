@@ -22,6 +22,11 @@ name = "timer"
 required-features = ["time", "examples"]
 test = true
 
+[[example]]
+name = "concrete-types"
+required-features = ["executor", "time", "examples"]
+test = true
+
 [dependencies]
 embassy-executor = { version = "0.2.0", features = [
   "nightly",
