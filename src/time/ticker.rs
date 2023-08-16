@@ -45,17 +45,25 @@ use core::{
     future::{poll_fn, Future},
     task::Poll,
 };
-use embassy_time::Ticker as EmbassyTicker;
+use embassy_time::{Duration, Ticker as EmbassyTicker};
 use thiserror_no_std::Error;
 
 /// The trait to replace the [`embassy_time::Ticker`] in code to allow the [`MockTicker`] to
 /// be used in its place for tests.
 pub trait Ticker {
+    /// Wrapper for ['embassy_time::Ticker::every()`].
+    fn every(duration: Duration) -> Self;
+
     /// Wrapper for [`embassy_time::Ticker::next()`].
     fn next(&mut self) -> impl Future<Output = ()> + '_;
 }
 
 impl Ticker for EmbassyTicker {
+    /// Creates a new ticker that ticks at the specified duration interval.
+    fn every(duration: Duration) -> Self {
+        Self::every(duration)
+    }
+
     /// Waits for the next tick
     fn next(&mut self) -> impl Future<Output = ()> + '_ {
         self.next()
@@ -216,6 +224,14 @@ impl Drop for MockTicker {
 }
 
 impl Ticker for MockTicker {
+    fn every(_duration: Duration) -> Self {
+        Self {
+            expected: 0,
+            times_called: 0,
+            is_done: true, // Mark as done so it won't be checked.
+        }
+    }
+
     fn next(&mut self) -> impl Future<Output = ()> + '_ {
         self.times_called = self.times_called.checked_add(1).unwrap();
         poll_fn(|_cx| Poll::Ready(()))
