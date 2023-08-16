@@ -35,7 +35,7 @@ mod tests {
 
     #[test]
     fn spawn_tasks_spawns_all_tasks() {
-        let spawner = MockSpawner::<2>::new();
+        let spawner = MockSpawner::new(2);
         spawn_tasks(&spawner);
 
         spawner.done().unwrap();
