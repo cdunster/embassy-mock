@@ -17,6 +17,11 @@ name = "ticker"
 required-features = ["time", "examples"]
 test = true
 
+[[example]]
+name = "timer"
+required-features = ["time", "examples"]
+test = true
+
 [dependencies]
 embassy-executor = { version = "0.2.0", features = [
   "nightly",
