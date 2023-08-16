@@ -22,7 +22,7 @@ mod tests {
 
     #[test]
     fn use_mocked_ticker_type() {
-        let mut ticker = MockTicker::<2>::new();
+        let mut ticker = MockTicker::new(2);
         block_on(ticker.next());
         block_on(ticker.next());
 
