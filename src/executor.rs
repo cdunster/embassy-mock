@@ -137,8 +137,14 @@ pub enum MockSpawnerError {
 /// ```
 #[derive(Debug)]
 pub struct MockSpawner {
+    /// The number of expected calls to [`Self::spawn()`].
     expected: usize,
+
+    /// The number of times [`Self::spawn()`] has been called.
     times_called: AtomicUsize,
+
+    /// Has this mock been checked with a call to [`Self::done()`].
+    /// If true it is not checked when dropped.
     is_done: bool,
 }
 
@@ -225,6 +231,8 @@ impl MockSpawner {
 }
 
 impl Drop for MockSpawner {
+    /// If [`Self::done()`] has not been called before being dropped then check that the number of
+    /// times [`Self::spawn()`] was called is as expected.
     fn drop(&mut self) {
         if !self.is_done {
             let times_called = self.times_called.load(Ordering::Relaxed);
@@ -238,6 +246,7 @@ impl Drop for MockSpawner {
 }
 
 impl Spawner for MockSpawner {
+    /// Increment an internal counter of how many times this method is called.
     fn spawn<S>(&self, token: SpawnToken<S>) -> Result<(), SpawnError> {
         // Need to forget the token so that it is not dropped which causes a panic
         core::mem::forget(token);
