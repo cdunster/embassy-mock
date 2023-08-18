@@ -1,2 +1,18 @@
-[env]
-CARGO_MAKE_COVERAGE_PROVIDER = "tarpaulin"
+[tasks.coverage]
+clear = true
+description = "Runs tests and checks code coverage."
+category = "Test"
+env = { "RUSTFLAGS" = "-C link-dead-code" }
+run_task = [{ name = "coverage-llvm-cov" }]
+
+[tasks.coverage-llvm-cov]
+description = "Use llvm-cov for code coverage"
+dependencies = ["install-llvm-tools-preview"]
+command = "cargo"
+args = ["llvm-cov", "--cobertura", "--output-path=cobertura.xml"]
+
+[tasks.install-llvm-tools-preview]
+# Nix doesn't use rustup so this task will fail to install so just skip it.
+condition = { env_not_set = ["IN_NIX_SHELL"] }
+# Don't know how to test if this is installed so just always try to install with rustup.
+install_crate = { rustup_component_name = "llvm-tools-preview" }
