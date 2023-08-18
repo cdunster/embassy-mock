@@ -135,8 +135,14 @@ pub enum MockTickerError {
 /// ```
 #[derive(Debug)]
 pub struct MockTicker {
+    /// The number of expected calls to [`Self::next()`].
     expected: usize,
+
+    /// The number of times [`Self::next()`] has been called.
     times_called: usize,
+
+    /// Has this mock been checked with a call to [`Self::done()`].
+    /// If true it is not checked when dropped.
     is_done: bool,
 }
 
@@ -212,6 +218,8 @@ impl MockTicker {
 }
 
 impl Drop for MockTicker {
+    /// If [`Self::done()`] has not been called before being dropped then check that the number of
+    /// times [`Self::next()`] was called is as expected.
     fn drop(&mut self) {
         if !self.is_done {
             assert_eq!(
@@ -224,6 +232,39 @@ impl Drop for MockTicker {
 }
 
 impl Ticker for MockTicker {
+    /// Create a [`MockTicker`] that doesn't require [`Self::done()`] to be called.
+    /// This allows a [`MockTicker`] to be created in production code instead of in the test.
+    ///
+    /// # Examples
+    /// ```
+    /// use embassy_mock::time::Ticker;
+    /// use embassy_time::Duration;
+    ///
+    /// async fn production_code<T: Ticker>() {
+    ///     let mut ticker = T::every(Duration::from_secs(1));
+    ///     // Do something...
+    ///     ticker.next().await;
+    ///     // Do something else...
+    /// }
+    ///
+    /// # test_creating_ticker();
+    /// // The unit tests that use the `MockTicker`
+    /// #[cfg(test)]
+    /// mod tests {
+    ///     use super::*;
+    /// # }
+    ///     use embassy_futures::block_on;
+    ///     use embassy_mock::time::MockTicker;
+    ///
+    ///     #[test]
+    ///     # fn hidden_fake_test(){}
+    ///     fn test_creating_ticker() {
+    ///         // Can't set expectations but at least it is testable
+    ///         block_on(production_code::<MockTicker>());
+    ///     }
+    /// # mod closing {
+    /// }
+    /// ```
     fn every(_duration: Duration) -> Self {
         Self {
             expected: 0,
@@ -232,6 +273,7 @@ impl Ticker for MockTicker {
         }
     }
 
+    /// Increment an internal counter of how many times this method is called and return [`Poll::Ready`].
     fn next(&mut self) -> impl Future<Output = ()> + '_ {
         self.times_called = self.times_called.checked_add(1).unwrap();
         poll_fn(|_cx| Poll::Ready(()))
