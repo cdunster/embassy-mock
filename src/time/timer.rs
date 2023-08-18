@@ -94,12 +94,43 @@ pub struct MockTimer;
 impl Future for MockTimer {
     type Output = ();
 
+    /// Immediately return [`Poll::Ready`].
     fn poll(self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<Self::Output> {
         Poll::Ready(())
     }
 }
 
 impl Timer for MockTimer {
+    /// Create a [`MockTimer`] that can be used to unit test code.
+    ///
+    /// # Examples
+    /// ```
+    /// use embassy_mock::time::Timer;
+    /// use embassy_time::Duration;
+    ///
+    /// async fn production_code<T: Timer>() {
+    ///     // Do something...
+    ///     T::after(Duration::from_millis(100)).await;
+    ///     // Do something else...
+    /// }
+    ///
+    /// # test_creating_timer();
+    /// // The unit tests that use the `MockTimer`
+    /// #[cfg(test)]
+    /// mod tests {
+    ///     use super::*;
+    /// # }
+    ///     use embassy_futures::block_on;
+    ///     use embassy_mock::time::MockTimer;
+    ///
+    ///     #[test]
+    ///     # fn hidden_fake_test(){}
+    ///     fn test_creating_timer() {
+    ///         block_on(production_code::<MockTimer>());
+    ///     }
+    /// # mod closing {
+    /// }
+    /// ```
     fn after(_duration: Duration) -> Self {
         Self {}
     }
