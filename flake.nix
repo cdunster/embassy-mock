@@ -43,6 +43,7 @@
             cargo-make
             cargo-tarpaulin
             cargo-toml-lint
+            cargo-llvm-cov
           ];
 
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
