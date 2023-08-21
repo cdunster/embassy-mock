@@ -71,6 +71,12 @@ jobs:
         with:
           crate: cargo-make
 
+      - name: Run all tests
+        uses: ClementTsang/cargo-action@v0.0.4
+        with:
+          command: make
+          args: test
+
       - name: Get code coverage of unit tests
         uses: ClementTsang/cargo-action@v0.0.4
         with:
