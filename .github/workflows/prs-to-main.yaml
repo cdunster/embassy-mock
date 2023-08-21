@@ -88,6 +88,12 @@ jobs:
         with:
           path: cobertura.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+          only_changed_files: true
+          skip_covered: false
+          show_line: true
+          show_branch: true
+          show_missing: true
+          link_missing_lines: true
           minimum_coverage: 75
           fail_below_threshold: false # Fail action when coverage is below the minimum
 
