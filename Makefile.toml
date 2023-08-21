@@ -9,7 +9,12 @@ run_task = [{ name = "coverage-llvm-cov" }]
 description = "Use llvm-cov for code coverage"
 dependencies = ["install-llvm-tools-preview"]
 command = "cargo"
-args = ["llvm-cov", "--cobertura", "--output-path=cobertura.xml"]
+args = [
+  "llvm-cov",
+  "--remap-path-prefix",
+  "--cobertura",
+  "--output-path=cobertura.xml",
+]
 
 [tasks.install-llvm-tools-preview]
 # Nix doesn't use rustup so this task will fail to install so just skip it.
