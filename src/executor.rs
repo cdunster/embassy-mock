@@ -42,7 +42,7 @@
 
 use core::sync::atomic::{AtomicUsize, Ordering};
 use embassy_executor::{SpawnError, SpawnToken, Spawner as EmbassySpawner};
-use thiserror_no_std::Error;
+use snafu::prelude::*;
 
 /// The trait to replace the [`embassy_executor::Spawner`] in code to allow the [`MockSpawner`] to
 /// be used in its place for tests.
@@ -61,10 +61,10 @@ impl Spawner for EmbassySpawner {
 }
 
 /// The errors that are reported by [`MockSpawner`].
-#[derive(Debug, Error, PartialEq)]
+#[derive(Debug, Snafu, PartialEq)]
 pub enum MockSpawnerError {
     /// The [`MockSpawner::spawn()`] method was called the wrong number of times.
-    #[error("expected to spawn {expected} task(s), actually spawned {actual}")]
+    #[snafu(display("expected to spawn {expected} task(s), actually spawned {actual}"))]
     WrongNumberOfTasks {
         /// The expected number of calls to [`MockSpawner::spawn()`].
         expected: usize,

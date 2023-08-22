@@ -46,7 +46,7 @@ use core::{
     task::Poll,
 };
 use embassy_time::{Duration, Ticker as EmbassyTicker};
-use thiserror_no_std::Error;
+use snafu::prelude::*;
 
 /// The trait to replace the [`embassy_time::Ticker`] in code to allow the [`MockTicker`] to
 /// be used in its place for tests.
@@ -71,10 +71,10 @@ impl Ticker for EmbassyTicker {
 }
 
 /// The errors that are reported by [`MockTicker`].
-#[derive(Debug, Error, PartialEq)]
+#[derive(Debug, Snafu, PartialEq)]
 pub enum MockTickerError {
     /// The [`MockTicker::next()`] method was called the wrong number of times.
-    #[error("expected to call next {expected} time(s), actually called {actual}")]
+    #[snafu(display("expected to call next {expected} time(s), actually called {actual}"))]
     WrongNumberOfTicks {
         /// The expected number of calls to [`MockTicker::next()`].
         expected: usize,
