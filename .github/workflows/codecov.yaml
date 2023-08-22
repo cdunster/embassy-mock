@@ -1,0 +1,41 @@
+name: Codecov
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install toolchain with required components
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: llvm-tools-preview
+
+      - name: Install cargo-make
+        uses: baptiste0928/cargo-install@v2.1.0
+        with:
+          crate: cargo-make
+
+      - name: Run all tests
+        uses: ClementTsang/cargo-action@v0.0.4
+        with:
+          command: make
+          args: test
+
+      - name: Get code coverage of unit tests
+        uses: ClementTsang/cargo-action@v0.0.4
+        with:
+          command: make
+          args: coverage-flow
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.json
