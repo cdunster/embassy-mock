@@ -12,8 +12,8 @@ command = "cargo"
 args = [
   "llvm-cov",
   "--remap-path-prefix",
-  "--cobertura",
-  "--output-path=cobertura.xml",
+  "--codecov",
+  "--output-path=coverage.json",
 ]
 
 [tasks.install-llvm-tools-preview]

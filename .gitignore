@@ -17,4 +17,4 @@ Cargo.lock
 .pre-commit-config.yaml
 
 # Code coverage results.
-cobertura.xml
+coverage.json
