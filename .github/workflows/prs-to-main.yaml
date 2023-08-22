@@ -83,19 +83,11 @@ jobs:
           command: make
           args: coverage-flow
 
-      - name: Check code coverage report
-        uses: 5monkeys/cobertura-action@v13
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
         with:
-          path: cobertura.xml
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          only_changed_files: true
-          skip_covered: false
-          show_line: true
-          show_branch: true
-          show_missing: true
-          link_missing_lines: true
-          minimum_coverage: 75
-          fail_below_threshold: false # Fail action when coverage is below the minimum
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.json
 
   make:
     runs-on: ubuntu-latest
