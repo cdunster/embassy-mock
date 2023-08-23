@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2023-08-23
+
+### Bug Fixes
+
+- *(cliff)* Disable skipping of tags
+
+
+### Documentation
+
+- *(executor)* Add more doc-comments
+- *(readme)* Add badges to the top
+- *(ticker)* Add more doc-comments
+- *(timer)* Add more doc-comments
+
+
+### Features
+
+- *(ticker)* Add mock for `every()` function
+- *(time)* Add MockTimer with `after()` support
+
+
+### Miscellaneous Tasks
+
+- *(ci)* Add codecov workflow for pushes to main
+- *(ci)* Upload coverage report to Codecov
+- *(ci)* Show more info in code coverage report
+- *(ci)* Add step in test job to run all tests
+- *(ci)* Add required component for llvm-cov
+- *(cliff)* Conditional breaking description
+- *(cliff)* Add `BREAKING` tag before message
+- *(codecov)* Set check for coverage delta
+- *(examples)* Remove concrete-timer example
+- *(examples)* Add example using concrete types
+- *(examples)* Using MockTimer without trait
+- *(examples)* Add timer example using `after()`
+- *(make)* Change coverage report format
+- *(make)* Show relative path for code coverage
+- *(make)* Override coverage task, use llvm-cov
+- Add support for llvm-cov code coverage tool
+
+
+### Refactor
+
+- [**BREAKING**] *(executor)* Remove const generic
+- [**BREAKING**] *(ticker)* Remove const generic
+- Use snafu instead of thiserror
+
+
 ## [0.1.0] - 2023-08-15
 
 ### Documentation
