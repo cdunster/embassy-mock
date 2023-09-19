@@ -31,7 +31,7 @@
 //!     #[test]
 //!     # fn hidden_fake_test(){}
 //!     fn test_spawning_of_tasks() {
-//!         let spawner = MockSpawner::new(1);
+//!         let spawner = MockSpawner::expect(1);
 //!         spawn_tasks(&spawner);
 //!
 //!         assert_eq!(spawner.done(), Ok(()));
@@ -96,7 +96,7 @@ pub enum MockSpawnerError {
 /// #[embassy_executor::task]
 /// async fn example_task() {}
 ///
-/// let spawner = MockSpawner::new(4);
+/// let spawner = MockSpawner::expect(4);
 /// spawner.spawn(example_task()).unwrap();
 ///
 /// let res = spawner.done();
@@ -116,7 +116,7 @@ pub enum MockSpawnerError {
 /// #[embassy_executor::task]
 /// async fn example_task() {}
 ///
-/// let spawner = MockSpawner::new(1); // Expects `spawn()` to be called once.
+/// let spawner = MockSpawner::expect(1); // Expects `spawn()` to be called once.
 /// spawner.spawn(example_task()).unwrap(); // `spawn()` is called once.
 ///
 /// // `spawner` is dropped but doesn't panic.
@@ -130,7 +130,7 @@ pub enum MockSpawnerError {
 /// #[embassy_executor::task]
 /// async fn example_task() {}
 ///
-/// let spawner = MockSpawner::new(2); // Expects `spawn()` to be called twice.
+/// let spawner = MockSpawner::expect(2); // Expects `spawn()` to be called twice.
 /// spawner.spawn(example_task()).unwrap(); // `spawn()` is called only once.
 ///
 /// // `spawner` is dropped and will panic.
@@ -149,7 +149,7 @@ pub struct MockSpawner {
 }
 
 impl MockSpawner {
-    /// Create a new [`MockSpawner`], providing the expected number of calls to [`Self::spawn()`].
+    /// Create a [`MockSpawner`], providing the expected number of calls to [`Self::spawn()`].
     ///
     /// # Examples
     ///
@@ -157,9 +157,9 @@ impl MockSpawner {
     /// use embassy_mock::executor::MockSpawner;
     ///
     /// # const X: usize = 0;
-    /// let spawner = MockSpawner::new(X); // Where `X` is the number of times `spawn()` should be called
+    /// let spawner = MockSpawner::expect(X); // Where `X` is the number of times `spawn()` should be called
     /// ```
-    pub const fn new(expected: usize) -> Self {
+    pub const fn expect(expected: usize) -> Self {
         Self {
             expected,
             times_called: AtomicUsize::new(0),
@@ -185,7 +185,7 @@ impl MockSpawner {
     /// #[embassy_executor::task]
     /// async fn example_task() {}
     ///
-    /// let spawner = MockSpawner::new(1);
+    /// let spawner = MockSpawner::expect(1);
     /// spawner.spawn(example_task()).unwrap();
     ///
     /// let res = spawner.done();
@@ -201,7 +201,7 @@ impl MockSpawner {
     /// #[embassy_executor::task]
     /// async fn example_task() {}
     ///
-    /// let spawner = MockSpawner::new(4);
+    /// let spawner = MockSpawner::expect(4);
     /// spawner.spawn(example_task()).unwrap();
     ///
     /// let res = spawner.done();
@@ -270,13 +270,13 @@ mod tests {
 
     #[test]
     fn can_spawn_single_task_just_drop() {
-        let spawner = MockSpawner::new(1);
+        let spawner = MockSpawner::expect(1);
         spawner.spawn(example_task()).unwrap();
     }
 
     #[test]
     fn can_spawn_multiple_tasks_just_drop() {
-        let spawner = MockSpawner::new(3);
+        let spawner = MockSpawner::expect(3);
         spawner.spawn(example_task()).unwrap();
         spawner.spawn(example_task()).unwrap();
         spawner.spawn(example_task()).unwrap();
@@ -285,7 +285,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "expected to spawn 1 task(s), actually spawned 3")]
     fn spawn_too_many_tasks_just_drop() {
-        let spawner = MockSpawner::new(1);
+        let spawner = MockSpawner::expect(1);
         spawner.spawn(example_task()).unwrap();
         spawner.spawn(example_task()).unwrap();
         spawner.spawn(example_task()).unwrap();
@@ -294,13 +294,13 @@ mod tests {
     #[test]
     #[should_panic(expected = "expected to spawn 3 task(s), actually spawned 1")]
     fn spawn_too_few_tasks_just_drop() {
-        let spawner = MockSpawner::new(3);
+        let spawner = MockSpawner::expect(3);
         spawner.spawn(example_task()).unwrap();
     }
 
     #[test]
     fn done_returns_ok() {
-        let spawner = MockSpawner::new(1);
+        let spawner = MockSpawner::expect(1);
         spawner.spawn(example_task()).unwrap();
 
         let res = spawner.done();
@@ -310,7 +310,7 @@ mod tests {
 
     #[test]
     fn done_returns_err_does_not_panic_on_drop() {
-        let spawner = MockSpawner::new(3);
+        let spawner = MockSpawner::expect(3);
         spawner.spawn(example_task()).unwrap();
 
         let res = spawner.done();
