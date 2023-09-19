@@ -73,7 +73,7 @@ mod tests {
     #[test]
     fn mocking_ticker() {
         let mut val = 0;
-        let mut ticker = MockTicker::new(1);
+        let mut ticker = MockTicker::expect(1);
         block_on(adding_with_ticker(&mut val, &mut ticker));
 
         assert_eq!(val, 1);

@@ -32,7 +32,7 @@
 //!     #[test]
 //!     # fn hidden_fake_test(){}
 //!     fn test_ticking() {
-//!         let mut ticker = MockTicker::new(1);
+//!         let mut ticker = MockTicker::expect(1);
 //!         block_on(wait_for_ticker(&mut ticker));
 //!
 //!         ticker.done().unwrap();
@@ -102,7 +102,7 @@ pub enum MockTickerError {
 /// use embassy_futures::block_on;
 /// use embassy_mock::time::{MockTicker, MockTickerError, Ticker};
 ///
-/// let mut ticker = MockTicker::new(3);
+/// let mut ticker = MockTicker::expect(3);
 /// block_on(ticker.next());
 ///
 /// let res = ticker.done();
@@ -118,7 +118,7 @@ pub enum MockTickerError {
 /// use embassy_futures::block_on;
 /// use embassy_mock::time::{MockTicker, Ticker};
 ///
-/// let mut ticker = MockTicker::new(1); // Expects `next()` to be called once.
+/// let mut ticker = MockTicker::expect(1); // Expects `next()` to be called once.
 /// block_on(ticker.next()); // `next()` is called once.
 ///
 /// // `ticker` is dropped but doesn't panic.
@@ -128,7 +128,7 @@ pub enum MockTickerError {
 /// use embassy_futures::block_on;
 /// use embassy_mock::time::{MockTicker, Ticker};
 ///
-/// let mut ticker = MockTicker::new(2); // Expects `next()` to be called twice.
+/// let mut ticker = MockTicker::expect(2); // Expects `next()` to be called twice.
 /// block_on(ticker.next()); // `next()` is called only once.
 ///
 /// // `ticker` is dropped and will panic.
@@ -147,7 +147,7 @@ pub struct MockTicker {
 }
 
 impl MockTicker {
-    /// Create a new [`MockTicker`], providing the expected number of calls to [`Self::next()`].
+    /// Create a [`MockTicker`], providing the expected number of calls to [`Self::next()`].
     ///
     /// # Examples
     ///
@@ -155,9 +155,9 @@ impl MockTicker {
     /// use embassy_mock::time::MockTicker;
     ///
     /// # const X: usize = 0;
-    /// let ticker = MockTicker::new(X); // Where `X` is the number of times `next()` should be called
+    /// let ticker = MockTicker::expect(X); // Where `X` is the number of times `next()` should be called
     /// ```
-    pub const fn new(expected: usize) -> Self {
+    pub const fn expect(expected: usize) -> Self {
         Self {
             expected,
             times_called: 0,
@@ -179,7 +179,7 @@ impl MockTicker {
     /// use embassy_futures::block_on;
     /// use embassy_mock::time::{MockTicker, Ticker};
     ///
-    /// let mut ticker = MockTicker::new(1);
+    /// let mut ticker = MockTicker::expect(1);
     /// block_on(ticker.next());
     ///
     /// ticker.done().unwrap();
@@ -189,7 +189,7 @@ impl MockTicker {
     /// use embassy_futures::block_on;
     /// use embassy_mock::time::{MockTicker, MockTickerError, Ticker};
     ///
-    /// let mut ticker = MockTicker::new(4);
+    /// let mut ticker = MockTicker::expect(4);
     /// block_on(ticker.next());
     ///
     /// let res = ticker.done();
@@ -287,14 +287,14 @@ mod tests {
 
     #[test]
     fn can_tick_once_just_drop() {
-        let mut ticker = MockTicker::new(1);
+        let mut ticker = MockTicker::expect(1);
 
         block_on(ticker.next());
     }
 
     #[test]
     fn can_tick_multiple_times_just_drop() {
-        let mut ticker = MockTicker::new(3);
+        let mut ticker = MockTicker::expect(3);
 
         block_on(ticker.next());
         block_on(ticker.next());
@@ -304,7 +304,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "expected to call next 1 time(s), actually called 3")]
     fn tick_too_many_times_just_drop() {
-        let mut ticker = MockTicker::new(1);
+        let mut ticker = MockTicker::expect(1);
         block_on(ticker.next());
         block_on(ticker.next());
         block_on(ticker.next());
@@ -313,13 +313,13 @@ mod tests {
     #[test]
     #[should_panic(expected = "expected to call next 3 time(s), actually called 1")]
     fn tick_too_few_times_just_drop() {
-        let mut ticker = MockTicker::new(3);
+        let mut ticker = MockTicker::expect(3);
         block_on(ticker.next());
     }
 
     #[test]
     fn done_returns_ok() {
-        let mut ticker = MockTicker::new(1);
+        let mut ticker = MockTicker::expect(1);
         block_on(ticker.next());
 
         let res = ticker.done();
@@ -329,7 +329,7 @@ mod tests {
 
     #[test]
     fn done_returns_err_does_not_panic_on_drop() {
-        let mut ticker = MockTicker::new(3);
+        let mut ticker = MockTicker::expect(3);
         block_on(ticker.next());
 
         let res = ticker.done();
