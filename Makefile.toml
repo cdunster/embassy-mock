@@ -1,20 +1,39 @@
-[tasks.coverage]
-clear = true
-description = "Runs tests and checks code coverage."
+[tasks.pre-coverage]
+alias = "coverage-llvm-cov-clean"
+
+[tasks.coverage-llvm-cov-clean]
+description = "Remove artefacts that cargo-llvm-cov has generated"
 category = "Test"
-env = { "RUSTFLAGS" = "-C link-dead-code" }
-run_task = [{ name = "coverage-llvm-cov" }]
+dependencies = ["install-llvm-tools-preview"]
+command = "cargo"
+args = ["llvm-cov", "clean"]
+
+[tasks.coverage]
+alias = "coverage-llvm-cov"
+
+[tasks.post-coverage]
+dependencies = ["llvm-cov-report-codecov", "llvm-cov-report-stdout"]
 
 [tasks.coverage-llvm-cov]
 description = "Use llvm-cov for code coverage"
+category = "Test"
 dependencies = ["install-llvm-tools-preview"]
 command = "cargo"
-args = [
-  "llvm-cov",
-  "--remap-path-prefix",
-  "--codecov",
-  "--output-path=coverage.json",
-]
+args = ["llvm-cov", "--remap-path-prefix", "--no-report"]
+
+[tasks.llvm-cov-report-stdout]
+description = "Report the coverage results via stdout"
+category = "Test"
+dependencies = ["install-llvm-tools-preview"]
+command = "cargo"
+args = ["llvm-cov", "report"]
+
+[tasks.llvm-cov-report-codecov]
+description = "Generate a codecov compatible report file of the coverage results"
+category = "Test"
+dependencies = ["install-llvm-tools-preview"]
+command = "cargo"
+args = ["llvm-cov", "report", "--codecov", "--output-path=coverage.json"]
 
 [tasks.install-llvm-tools-preview]
 # Nix doesn't use rustup so this task will fail to install so just skip it.
