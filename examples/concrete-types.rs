@@ -83,7 +83,7 @@ mod tests {
 
     #[test]
     fn mocking_spawner() {
-        let spawner = MockSpawner::new(2);
+        let spawner = MockSpawner::expect(2);
         spawn_tasks(&spawner);
 
         spawner.done().unwrap();
