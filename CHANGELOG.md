@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2023-09-19
+
+### Miscellaneous Tasks
+
+- *(ci)* Rename workflow prs-to-main -> ci
+- *(make)* Print coverage results to stdout
+
+
+### Refactor
+
+- [**BREAKING**] *(spawner)* Rename new -> expect
+- [**BREAKING**] *(ticker)* Rename new -> expect
+
+
 ## [0.2.1] - 2023-08-23
 
 ### Documentation
