@@ -56,7 +56,7 @@ impl Timer for EmbassyTimer {
     /// Expire after specified [`Duration`].
     /// This can be used as a sleep abstraction.
     ///
-    /// Example:
+    /// # Examples:
     /// ``` no_run
     /// # #![feature(type_alias_impl_trait)]
     /// #
