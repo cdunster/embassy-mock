@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2024-01-11
+
+### Miscellaneous Tasks
+
+- *(ci)* Rename workflow prs-to-main -> ci
+- *(deps)* Update embassy versions
+- *(make)* Print coverage results to stdout
+
+
+### Refactor
+
+- [**BREAKING**] *(spawner)* Rename new -> expect
+  - **Breaking Change**: The public API has changed with this rename.
+- [**BREAKING**] *(ticker)* Rename new -> expect
+  - **Breaking Change**: The public API has changed with this rename.
+
+
+### Styling
+
+- *(deps)* Alphabetise enabled features
+- *(deps)* Alphabetise dev-dependencies
+
+
 ## [0.2.1] - 2023-08-23
 
 ### Documentation
