@@ -54,6 +54,10 @@
 
           # Spell checking
           typos.enable = true;
+
+          # Whitespace
+          mixed-line-endings.enable = true;
+          trim-trailing-whitespace.enable = true;
         };
       };
 
