@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs";
-    flake-utils.url = "flake-utils";
+    flake-parts.url = "flake-parts";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,15 +12,18 @@
     };
   };
 
-  outputs = { self, ... }@inputs:
-    inputs.flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
-      let
-        pkgs = inputs.nixpkgs.legacyPackages.${system}.appendOverlays [
-          inputs.rust-overlay.overlays.default
-        ];
-        rustFromFile = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-      in
-      {
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
+
+      perSystem = { self', pkgs, system, ... }: {
+        _module.args.pkgs = import inputs.nixpkgs {
+          inherit system;
+          overlays = [ inputs.rust-overlay.overlays.default ];
+        };
+
+        formatter = pkgs.nixpkgs-fmt;
+
         checks = {
           pre-commit = inputs.pre-commit-hooks.lib.${system}.run {
             src = ./.;
@@ -35,7 +38,7 @@
 
         devShells.default = with pkgs; mkShell {
           packages = [
-            rustFromFile
+            (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
             taplo
             git-cliff
             cargo-make
@@ -47,9 +50,9 @@
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
 
           shellHook = ''
-            ${(self.checks.${system}.pre-commit).shellHook}
+            ${(self'.checks.pre-commit).shellHook}
           '';
         };
-      });
+      };
+    };
 }
-
