@@ -51,6 +51,9 @@
             };
           };
           mdformat.enable = true;
+
+          # Spell checking
+          typos.enable = true;
         };
       };
 
