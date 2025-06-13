@@ -39,7 +39,7 @@
         devShells.default = with pkgs; mkShell {
           packages = [
             (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
-            taplo
+            self'.checks.pre-commit.enabledPackages
             git-cliff
             cargo-make
             cargo-tarpaulin
