@@ -70,7 +70,6 @@
           self'.checks.pre-commit.enabledPackages
           git-cliff
           cargo-make
-          cargo-toml-lint
           cargo-llvm-cov
         ];
 
