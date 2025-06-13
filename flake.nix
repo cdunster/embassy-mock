@@ -26,9 +26,16 @@
       checks.pre-commit = inputs.pre-commit-hooks.lib.${system}.run {
         src = ./.;
         hooks = {
+          # Nix
           nixpkgs-fmt.enable = true;
+
+          # Rust
           rustfmt.enable = true;
+
+          # Git
           commitizen.enable = true;
+
+          # TOML
           taplo.enable = true;
         };
       };
