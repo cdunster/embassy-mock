@@ -8,12 +8,6 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  conventional-commits:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check for Conventional Commits
-        uses: wtfiscrq/conventional-commits-action@1.0.1
-
   nix-flake-check:
     runs-on: ubuntu-latest
     steps:
