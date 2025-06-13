@@ -28,6 +28,8 @@
         hooks = {
           # Nix
           nixpkgs-fmt.enable = true;
+          deadnix.enable = true;
+          statix.enable = true;
 
           # Rust
           rustfmt.enable = true;
