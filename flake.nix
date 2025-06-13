@@ -58,6 +58,9 @@
           # Whitespace
           mixed-line-endings.enable = true;
           trim-trailing-whitespace.enable = true;
+
+          # Private keys
+          detect-private-keys.enable = true;
         };
       };
 
