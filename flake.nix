@@ -35,6 +35,8 @@
           rustfmt.enable = true;
 
           # Git
+          check-merge-conflicts.enable = true;
+          no-commit-to-branch.enable = true;
           commitizen.enable = true;
 
           # TOML
