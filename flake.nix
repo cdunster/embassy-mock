@@ -49,9 +49,7 @@
 
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
 
-          shellHook = ''
-            ${(self'.checks.pre-commit).shellHook}
-          '';
+          inherit (self'.checks.pre-commit) shellHook;
         };
       };
     };
