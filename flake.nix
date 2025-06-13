@@ -41,6 +41,16 @@
 
           # TOML
           taplo.enable = true;
+
+          # Markdown
+          markdownlint = {
+            enable = true;
+            settings.configuration = {
+              # Allow duplicate headings if they have different parents (for the changelog)
+              no-duplicate-heading.siblings_only = true;
+            };
+          };
+          mdformat.enable = true;
         };
       };
 

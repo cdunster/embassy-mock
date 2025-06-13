@@ -6,5 +6,6 @@
 [![crates.io-downloads](https://img.shields.io/crates/d/embassy-mock)](https://crates.io/crates/embassy-mock)
 [![license](https://img.shields.io/crates/l/embassy-mock.svg)](https://github.com/cdunster/embassy-mock/blob/main/LICENSE)
 
-> An unofficial collection of mocked types for [Embassy](https://github.com/embassy-rs/embassy): the embedded framework written in Rust, using async/await.
-
+> An unofficial collection of mocked types for
+> [Embassy](https://github.com/embassy-rs/embassy): the embedded framework
+> written in Rust, using async/await.

@@ -7,10 +7,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Miscellaneous Tasks
 
-- [**BREAKING**] Update embassy dependencies
+- \[**BREAKING**\] Update embassy dependencies
   - **Breaking Change**: Updated major version of dependencies.
-
-
 
 ## [0.3.0] - 2024-01-11
 
@@ -20,20 +18,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - *(deps)* Update embassy versions
 - *(make)* Print coverage results to stdout
 
-
 ### Refactor
 
-- [**BREAKING**] *(spawner)* Rename new -> expect
+- \[**BREAKING**\] *(spawner)* Rename new -> expect
   - **Breaking Change**: The public API has changed with this rename.
-- [**BREAKING**] *(ticker)* Rename new -> expect
+- \[**BREAKING**\] *(ticker)* Rename new -> expect
   - **Breaking Change**: The public API has changed with this rename.
-
 
 ### Styling
 
 - *(deps)* Alphabetise enabled features
 - *(deps)* Alphabetise dev-dependencies
-
 
 ## [0.2.1] - 2023-08-23
 
@@ -41,13 +36,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - *(readme)* Fix link to license on badge
 
-
 ## [0.2.0] - 2023-08-23
 
 ### Bug Fixes
 
 - *(cliff)* Disable skipping of tags
-
 
 ### Documentation
 
@@ -56,12 +49,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - *(ticker)* Add more doc-comments
 - *(timer)* Add more doc-comments
 
-
 ### Features
 
 - *(ticker)* Add mock for `every()` function
 - *(time)* Add MockTimer with `after()` support
-
 
 ### Miscellaneous Tasks
 
@@ -82,13 +73,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - *(make)* Override coverage task, use llvm-cov
 - Add support for llvm-cov code coverage tool
 
-
 ### Refactor
 
-- [**BREAKING**] *(executor)* Remove const generic
-- [**BREAKING**] *(ticker)* Remove const generic
+- \[**BREAKING**\] *(executor)* Remove const generic
+- \[**BREAKING**\] *(ticker)* Remove const generic
 - Use snafu instead of thiserror
-
 
 ## [0.1.0] - 2023-08-15
 
@@ -96,12 +85,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Add doc-comments to all modules
 
-
 ### Features
 
 - *(executor)* Add MockSpawner support
 - *(time)* Add MockTicker support
-
 
 ### Miscellaneous Tasks
 
@@ -113,13 +100,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - *(nix)* Add cargo-toml-lint
 - Warn when missing doc-comments in crate
 
-
 ## [0.0.0] - 2023-08-14
 
 ### Documentation
 
 - *(cargo)* Add metadata for publish
-
 
 ### Miscellaneous Tasks
 
@@ -133,5 +118,3 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - *(nix)* Add cargo-make
 - *(nix)* Add cargo-tarpaulin for code coverage
 - *(release-plz)* Use custom cliff config
-
-
