@@ -6,8 +6,8 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -23,7 +23,7 @@
 
       formatter = pkgs.nixpkgs-fmt;
 
-      checks.pre-commit = inputs.pre-commit-hooks.lib.${system}.run {
+      checks.pre-commit = inputs.git-hooks.lib.${system}.run {
         src = ./.;
         hooks = {
           # Nix
