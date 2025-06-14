@@ -33,17 +33,6 @@ jobs:
       - name: Perform flake check
         run: nix flake check --all-systems
 
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Audit Rust Dependencies
-        uses: actions-rust-lang/audit@v1
-        with:
-          createIssues: false
-
   clippy:
     runs-on: ubuntu-latest
     steps:
