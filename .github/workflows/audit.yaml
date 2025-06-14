@@ -8,6 +8,7 @@ on:
       - '**/Cargo.lock'
       - '.github/workflows/audit.yml'
       - '**/audit.toml'
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
