@@ -71,10 +71,10 @@ jobs:
         with:
           components: llvm-tools-preview
 
-      - name: Install cargo-make
-        uses: baptiste0928/cargo-install@v2.1.0
+      - name: Install required tools
+        uses: taiki-e/install-action@v2
         with:
-          crate: cargo-make
+          tool: cargo-make,cargo-llvm-cov
 
       - name: Run all tests
         uses: ClementTsang/cargo-action@v0.0.4
