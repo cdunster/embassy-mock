@@ -3,8 +3,6 @@
 //!
 //! # Examples
 //! ```
-//! # #![feature(type_alias_impl_trait)]
-//! #
 //! use embassy_mock::time::Timer;
 //! use embassy_time::Duration;
 //!
@@ -58,8 +56,6 @@ impl Timer for EmbassyTimer {
     ///
     /// Example:
     /// ``` no_run
-    /// # #![feature(type_alias_impl_trait)]
-    /// #
     /// # fn foo() {}
     /// use embassy_time::{Duration, Timer};
     ///
