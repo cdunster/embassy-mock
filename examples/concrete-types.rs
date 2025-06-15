@@ -2,7 +2,6 @@
 //! generic over the provided traits. It does this via conditional compilation.
 
 #![no_std]
-#![feature(type_alias_impl_trait)]
 
 use embassy_time::Duration;
 

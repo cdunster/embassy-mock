@@ -1,5 +1,4 @@
 #![no_std]
-#![feature(type_alias_impl_trait)]
 
 use embassy_mock::executor::Spawner;
 use embassy_time::{Duration, Timer};

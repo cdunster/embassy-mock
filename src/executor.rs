@@ -2,8 +2,6 @@
 //!
 //! # Examples
 //! ```
-//! # #![feature(type_alias_impl_trait)]
-//! #
 //! use embassy_mock::executor::Spawner;
 //!
 //! #[embassy_executor::task]
@@ -89,8 +87,6 @@ pub enum MockSpawnerError {
 /// # Examples
 ///
 /// ```
-/// # #![feature(type_alias_impl_trait)]
-/// #
 /// use embassy_mock::executor::{MockSpawner, MockSpawnerError, Spawner};
 ///
 /// #[embassy_executor::task]
@@ -109,8 +105,6 @@ pub enum MockSpawnerError {
 /// ```
 ///
 /// ```
-/// # #![feature(type_alias_impl_trait)]
-/// #
 /// use embassy_mock::executor::{MockSpawner, Spawner};
 ///
 /// #[embassy_executor::task]
@@ -123,8 +117,6 @@ pub enum MockSpawnerError {
 /// ```
 ///
 /// ```should_panic
-/// # #![feature(type_alias_impl_trait)]
-/// #
 /// use embassy_mock::executor::{MockSpawner, Spawner};
 ///
 /// #[embassy_executor::task]
@@ -178,8 +170,6 @@ impl MockSpawner {
     /// # Examples
     ///
     /// ```
-    /// # #![feature(type_alias_impl_trait)]
-    /// #
     /// use embassy_mock::executor::{MockSpawner, Spawner};
     ///
     /// #[embassy_executor::task]
@@ -194,8 +184,6 @@ impl MockSpawner {
     /// ```
     ///
     /// ```
-    /// # #![feature(type_alias_impl_trait)]
-    /// #
     /// use embassy_mock::executor::{MockSpawner, MockSpawnerError, Spawner};
     ///
     /// #[embassy_executor::task]

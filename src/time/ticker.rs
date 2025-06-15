@@ -3,8 +3,6 @@
 //!
 //! # Examples
 //! ```
-//! # #![feature(type_alias_impl_trait)]
-//! #
 //! use embassy_mock::time::Ticker;
 //! use embassy_time::Duration;
 //!
