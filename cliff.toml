@@ -34,7 +34,7 @@ body = """
             {% endif -%}
         {% endif -%}
     {% endfor -%}
-{% endfor %}\n
+{% endfor %}
 """
 # remove the leading and trailing whitespace from the template
 trim = true
