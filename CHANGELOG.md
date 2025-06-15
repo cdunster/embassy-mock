@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-06-15
+
+### Features
+
+- [**BREAKING**] Remove unnecessary feature attributes
+- Set MSRV to stable Rust 1.85.x
+
+### Miscellaneous Tasks
+
+- *(cliff)* Remove newline after version
+
 ## [0.4.1] - 2025-06-14
 
 ### Bug Fixes
