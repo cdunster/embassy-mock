@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-06-15
+
+### Features
+
+- \[**BREAKING**\] Remove unnecessary feature attributes
+  - **Breaking Change**: Crates on older versions of the Rust compiler may still
+    require these features.
+- Set MSRV to stable Rust 1.85.x
+
+### Miscellaneous Tasks
+
+- *(cliff)* Remove newline after version
+  - release-plz seems to add a newline already which gives two newlines
+    between versions which goes against markdown lints.
+- *(cliff)* Add commit body to the changelog if exists
+
 ## [0.4.1] - 2025-06-14
 
 ### Bug Fixes
